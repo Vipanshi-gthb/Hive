@@ -3,11 +3,45 @@ server:
 
 spring:
   application:
-    name: backend
+    name: hive-cortex-backend
 
-  # Temporary DataSource exclusions until Prompt 004 (PostgreSQL connection configuration)
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
-      - org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration
-      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+  # ---------------------------------------------------------------------------
+  # DataSource — all credentials are read from environment variables.
+  # Never hardcode values here. See .env.example for required variable names.
+  # ---------------------------------------------------------------------------
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      # Fail fast on startup if the DB is unreachable (vs. lazy connection failure)
+      initialization-fail-timeout: 5000
+      connection-timeout: 10000
+      maximum-pool-size: 10
+
+  # ---------------------------------------------------------------------------
+  # JPA / Hibernate
+  # ddl-auto=validate: Hibernate checks the schema matches entities on startup
+  # and fails with a clear error if there is a mismatch.
+  # Flyway (added in Prompt 007) will own all DDL — never use update/create here.
+  # ---------------------------------------------------------------------------
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  # ---------------------------------------------------------------------------
+  # Flyway (schema migrations) — configured in Prompt 007.
+  # Disabled here so the app can start without migration scripts in place yet.
+  # Remove this block and add Flyway dependency in Prompt 007.
+  # ---------------------------------------------------------------------------
+  flyway:
+    enabled: false
