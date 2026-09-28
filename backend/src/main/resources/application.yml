@@ -45,3 +45,10 @@ spring:
   # ---------------------------------------------------------------------------
   flyway:
     enabled: false
+
+# ------------------------------------------------------------------------------
+# CORS — scoped to the known frontend origin. Never use * in production.
+# Override via CORS_ALLOWED_ORIGIN environment variable.
+# ------------------------------------------------------------------------------
+cors:
+  allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:5173}
