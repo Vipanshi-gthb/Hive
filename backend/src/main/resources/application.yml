@@ -1,5 +1,14 @@
 server:
   port: 8080
+  error:
+    # Disable the whitelabel error page — GlobalExceptionHandler owns all error responses.
+    # These settings suppress any accidental leakage through Spring Boot's /error fallback.
+    include-message: never
+    include-stacktrace: never
+    include-exception: false
+    include-binding-errors: never
+    whitelabel:
+      enabled: false
 
 spring:
   application:
