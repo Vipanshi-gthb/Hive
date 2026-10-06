@@ -53,7 +53,8 @@ spring:
   # Remove this block and add Flyway dependency in Prompt 007.
   # ---------------------------------------------------------------------------
   flyway:
-    enabled: false
+    enabled: true
+    baseline-on-migrate: true
 
 # ------------------------------------------------------------------------------
 # CORS — scoped to the known frontend origin. Never use * in production.
